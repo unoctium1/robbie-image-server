@@ -14,20 +14,25 @@ const uploadFiles = async (req, res) => {
       return res.send(`You must give an id.`);
     }
 
-    Image.create({
-      type: req.file.mimetype,
-      vumark_id: req.body.vumark_id,
-      name: req.file.originalname,
-      data: fs.readFileSync(
-        __basedir + "/resources/static/assets/uploads/" + req.file.filename
-      ),
-    }).then((image) => {
-      fs.writeFileSync(
-        __basedir + "/resources/static/assets/tmp/" + image.vumark_id + "-" + image.name,
-        image.data
-      );
+    Image.findOrCreate({
+      where: {
+        vumark_id: req.body.vumark_id,
+      }
+    }).then(([image, created]) =>{
+      image.update({
+        type: req.file.mimetype,
+        name: req.file.originalname,
+        data: fs.readFileSync(
+          __basedir + "/resources/static/assets/uploads/" + req.file.filename
+        ),
+      }).then(() => {
+        fs.writeFileSync(
+          __basedir + "/resources/static/assets/tmp/" + image.vumark_id + "-" + image.name,
+          image.data
+        );
 
-      return res.send(`File has been uploaded.`);
+        return res.send(`File has been ${created ? `uploaded` : `updated`}`);
+      })
     });
   } catch (error) {
     console.log(error);
