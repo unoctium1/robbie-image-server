@@ -1,5 +1,5 @@
 module.exports = {
-  URI: (process.env.CLEARDB_DATABASE_URL) ? process.env.CLEARDB_DATABASE_URL : 'mysql://root:123456@localhost:3306/testdb',
+  URI: process.env.CLEARDB_DATABASE_URL,
   pool: {
     max: 5,
     min: 0,
