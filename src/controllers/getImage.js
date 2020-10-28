@@ -11,6 +11,7 @@ const getImage = async (req, res) => {
       } else {
         return res.send({
           name: image.name,
+          type: image.type,
           data: image.data
         })
       }
