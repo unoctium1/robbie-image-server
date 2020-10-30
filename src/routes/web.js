@@ -9,6 +9,7 @@ const upload = require("../middleware/upload");
 let routes = (app) => {
   router.get("/", homeController.getHome);
   router.get('/vumarks/:id', getimageController.getImage);
+  router.get('/vumarks/:id/image', getimageController.getImageData);
 
   router.post("/upload", upload.single("file"), uploadController.uploadFiles);
 
